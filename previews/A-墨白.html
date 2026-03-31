@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>风格 A — 墨白</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #f6f4f0;
+  --surface: #edeae4;
+  --text: #1c1c1c;
+  --text-2: #5a5a5a;
+  --text-3: #9a9a95;
+  --accent: #8b3a2a;
+  --accent-light: rgba(139, 58, 42, 0.08);
+  --border: #ddd9d2;
+  --font-display: 'Noto Serif SC', serif;
+  --font-body: 'Noto Sans SC', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+a { color: inherit; text-decoration: none; cursor: none; }
+
+/* 彗星光标 */
+.comet-dot {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.1s;
+}
+
+body:hover .comet-dot { opacity: 1; }
+
+/* 底噪 */
+.grain {
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  pointer-events: none;
+  z-index: 9990;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 0.8s steps(1) infinite;
+}
+
+@keyframes grain {
+  0% { transform: translate(0,0); }
+  33% { transform: translate(-1%,-2%); }
+  66% { transform: translate(2%,1%); }
+}
+
+/* 风格标签 */
+.style-badge {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 100;
+  background: var(--accent);
+  color: #f6f4f0;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  padding: 0.5rem 1.2rem;
+  font-family: var(--font-body);
+}
+
+/* 导航 */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  padding: 1.2rem 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  mix-blend-mode: difference;
+}
+
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #f6f4f0;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-links a {
+  font-size: 0.78rem;
+  color: #f6f4f0;
+  letter-spacing: 0.05em;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+
+.nav-links a:hover { opacity: 1; }
+
+/* 英雄区 */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 8rem 2rem;
+  position: relative;
+}
+
+.hero-tag {
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  letter-spacing: 0.3em;
+  color: var(--accent);
+  margin-bottom: 2rem;
+  font-weight: 300;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.3s forwards;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 7vw, 4.8rem);
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 2rem;
+  letter-spacing: 0.02em;
+}
+
+.hero-title .line {
+  display: block;
+  overflow: hidden;
+}
+
+.hero-title .line span {
+  display: inline-block;
+  transform: translateY(100%);
+  animation: slideUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hero-title .line:nth-child(2) span {
+  animation-delay: 0.15s;
+  color: var(--accent);
+}
+
+@keyframes slideUp {
+  to { transform: translateY(0); }
+}
+
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-sub {
+  font-size: 0.9rem;
+  color: var(--text-2);
+  margin-bottom: 3rem;
+  letter-spacing: 0.1em;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.6s forwards;
+  transform: translateY(10px);
+}
+
+.hero-line {
+  width: 1px;
+  height: 80px;
+  background: linear-gradient(to bottom, var(--accent), transparent);
+  position: absolute;
+  bottom: 2rem;
+  animation: pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.2; transform: scaleY(0.5); transform-origin: top; }
+  50% { opacity: 0.8; transform: scaleY(1); }
+}
+
+/* 断句 */
+.divider {
+  text-align: center;
+  padding: 3rem 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.divider-text {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  color: var(--text-3);
+  letter-spacing: 0.4em;
+  font-weight: 300;
+}
+
+/* 关于我 */
+.about {
+  padding: 8rem 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 4rem;
+}
+
+.about-photo {
+  position: relative;
+  overflow: hidden;
+}
+
+.about-photo::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: var(--accent);
+  transform: scaleX(1);
+  transform-origin: right;
+  transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+  z-index: 2;
+}
+
+.about-photo.revealed::after {
+  transform: scaleX(0);
+}
+
+.photo-box {
+  aspect-ratio: 3/4;
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-3);
+  font-size: 0.85rem;
+}
+
+.about-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  color: var(--accent);
+  margin-bottom: 1rem;
+  font-weight: 400;
+}
+
+.about-headline {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.about-desc {
+  color: var(--text-2);
+  font-size: 0.92rem;
+  margin-bottom: 2rem;
+  font-weight: 300;
+  line-height: 2;
+}
+
+.stats {
+  display: flex;
+  gap: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.stat-unit {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--accent);
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--text-3);
+  margin-top: 4px;
+}
+
+/* 案例预览 */
+.case-preview {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2rem 8rem;
+}
+
+.case-header {
+  display: flex;
+  align-items: baseline;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.case-num {
+  font-family: var(--font-display);
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--accent);
+  opacity: 0.2;
+  line-height: 1;
+}
+
+.case-meta {
+  font-size: 0.75rem;
+  color: var(--text-3);
+  letter-spacing: 0.05em;
+}
+
+.case-title {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.case-img {
+  position: relative;
+  overflow: hidden;
+  border-radius: 2px;
+  margin-bottom: 2rem;
+}
+
+.case-img::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: var(--accent);
+  transform: scaleX(1);
+  transform-origin: right;
+  transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
+  z-index: 2;
+}
+
+.case-img.revealed::after {
+  transform: scaleX(0);
+}
+
+.img-placeholder {
+  aspect-ratio: 16/9;
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-3);
+  font-size: 0.85rem;
+}
+
+.results {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.result-card {
+  padding: 1.5rem 2rem;
+  background: var(--accent-light);
+  border-radius: 4px;
+  border-left: 2px solid var(--accent);
+}
+
+.result-num {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.result-unit {
+  font-family: var(--font-display);
+  font-size: 1rem;
+}
+
+.result-label {
+  font-size: 0.75rem;
+  color: var(--text-3);
+  margin-top: 6px;
+}
+
+/* 联系 */
+.contact {
+  background: var(--text);
+  color: var(--bg);
+  padding: 6rem 2rem;
+  text-align: center;
+}
+
+.contact .about-label { color: var(--accent); opacity: 0.8; }
+
+.contact-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin-bottom: 2.5rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.contact-links {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+}
+
+.contact-item {
+  font-size: 0.9rem;
+  color: rgba(246, 244, 240, 0.5);
+  transition: color 0.3s;
+}
+
+.contact-item:hover { color: var(--accent); }
+
+@media (max-width: 768px) {
+  .about { grid-template-columns: 1fr; }
+  .results { flex-direction: column; }
+  .cursor, .comet-dot { display: none !important; }
+  body { cursor: auto; }
+  a { cursor: auto; }
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<div class="style-badge">A · 墨白</div>
+
+<!-- 20个彗星点 -->
+<div class="comet-dot" id="cd0"></div><div class="comet-dot" id="cd1"></div>
+<div class="comet-dot" id="cd2"></div><div class="comet-dot" id="cd3"></div>
+<div class="comet-dot" id="cd4"></div><div class="comet-dot" id="cd5"></div>
+<div class="comet-dot" id="cd6"></div><div class="comet-dot" id="cd7"></div>
+<div class="comet-dot" id="cd8"></div><div class="comet-dot" id="cd9"></div>
+<div class="comet-dot" id="cd10"></div><div class="comet-dot" id="cd11"></div>
+
+<nav>
+  <a href="#" class="nav-logo">YOUR NAME</a>
+  <div class="nav-links">
+    <a href="#">关于</a>
+    <a href="#">案例</a>
+    <a href="#">联系</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <p class="hero-tag">品 牌 策 略 · 创 意 落 地</p>
+  <h1 class="hero-title">
+    <span class="line"><span>以策略为骨</span></span>
+    <span class="line"><span>以创意为肌理</span></span>
+  </h1>
+  <p class="hero-sub">5+ 品牌策划案例 · 快消个护行业 · 用数据说话</p>
+  <div class="hero-line"></div>
+</section>
+
+<div class="divider">
+  <span class="divider-text">策 略 · 创 意 · 成 果</span>
+</div>
+
+<section class="about" id="about">
+  <div class="about-photo" id="aboutPhoto">
+    <div class="photo-box">你的照片</div>
+  </div>
+  <div>
+    <p class="about-label">ABOUT</p>
+    <h2 class="about-headline">在广告行业深耕 X 年<br>专注品牌策略与创意落地</h2>
+    <p class="about-desc">
+      曾服务过 XX、XX 等品牌，擅长将市场洞察转化为可落地的创意方案。
+      相信好的策略应该像水——找到最自然的流向，润物无声。
+    </p>
+    <div class="stats">
+      <div class="stat">
+        <span class="stat-num">50</span><span class="stat-unit">+</span>
+        <div class="stat-label">服务品牌</div>
+      </div>
+      <div class="stat">
+        <span class="stat-num">500</span><span class="stat-unit">万+</span>
+        <div class="stat-label">管理预算</div>
+      </div>
+      <div class="stat">
+        <span class="stat-num">200</span><span class="stat-unit">%</span>
+        <div class="stat-label">平均 ROI 提升</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="case-preview">
+  <div class="case-header">
+    <span class="case-num">01</span>
+    <span class="case-meta">品牌名称 · 品牌策略 / 整合营销 · 2024</span>
+  </div>
+  <h3 class="case-title">案例标题：一句话概括你做了什么</h3>
+  <div class="case-img" id="caseImg">
+    <div class="img-placeholder">案例主图</div>
+  </div>
+  <div class="results">
+    <div class="result-card">
+      <span class="result-num">300</span><span class="result-unit">%</span>
+      <div class="result-label">品牌曝光增长</div>
+    </div>
+    <div class="result-card">
+      <span class="result-num">150</span><span class="result-unit">万</span>
+      <div class="result-label">触达人群</div>
+    </div>
+    <div class="result-card">
+      <span class="result-num">45</span><span class="result-unit">%</span>
+      <div class="result-label">转化率提升</div>
+    </div>
+  </div>
+</div>
+
+<section class="contact">
+  <p class="about-label">GET IN TOUCH</p>
+  <h2 class="contact-title">有合作想法？<br>聊聊看。</h2>
+  <div class="contact-links">
+    <a class="contact-item" href="#">your@email.com</a>
+    <a class="contact-item" href="#">LinkedIn</a>
+    <a class="contact-item" href="#">138-0000-0000</a>
+  </div>
+</section>
+
+<script>
+// 彗星尾巴光标
+const dots = [];
+for (let i = 0; i < 12; i++) {
+  dots.push(document.getElementById('cd' + i));
+}
+
+let trail = [];
+let mouseX = 0, mouseY = 0;
+
+document.addEventListener('mousemove', (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+});
+
+function updateTrail() {
+  // 头部直接跟随鼠标
+  trail[0] = { x: mouseX, y: mouseY };
+
+  // 每个点跟随前一个点
+  for (let i = 1; i < dots.length; i++) {
+    if (!trail[i]) trail[i] = { x: mouseX, y: mouseY };
+    trail[i].x += (trail[i-1].x - trail[i].x) * 0.35;
+    trail[i].y += (trail[i-1].y - trail[i].y) * 0.35;
+  }
+
+  // 更新 DOM
+  dots.forEach((dot, i) => {
+    if (!trail[i]) return;
+    const scale = 1 - (i / dots.length) * 0.8;
+    const opacity = 1 - (i / dots.length);
+    dot.style.left = trail[i].x + 'px';
+    dot.style.top = trail[i].y + 'px';
+    dot.style.transform = `translate(-50%, -50%) scale(${scale})`;
+    dot.style.opacity = opacity * 0.8;
+  });
+
+  requestAnimationFrame(updateTrail);
+}
+updateTrail();
+
+// 幕帘动画
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('revealed');
+  });
+}, { threshold: 0.3 });
+
+document.querySelectorAll('.about-photo, .case-img').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
