@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lori.Wang 作品集</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@200;300;400;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #fafaf8;
+  --surface: #f5f2ec;
+  --text: #2a2118;
+  --text-2: #6d5f52;
+  --text-3: #a69a8c;
+  --accent: #9c7c5c;
+  --accent-deep: #7a5c3e;
+  --border: #e8e4dc;
+  --pop-orange: #e67e22;
+  --pop-green: #2d5a4a;
+  --serif: 'Noto Serif SC', 'Songti SC', serif;
+  --sans: 'Noto Sans SC', sans-serif;
+}
+
+html { font-size: 16px; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+a { color: inherit; text-decoration: none; cursor: none; }
+
+/* === 彗星光标 === */
+.comet-dot {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+}
+body.mouse-active .comet-dot { opacity: 1; }
+
+/* === 底噪 === */
+.grain {
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  pointer-events: none;
+  z-index: 9990;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 0.8s steps(1) infinite;
+}
+@keyframes grain {
+  0% { transform: translate(0,0); }
+  33% { transform: translate(-1%,-2%); }
+  66% { transform: translate(2%,1%); }
+}
+
+/* === 滚动进度条 === */
+.scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  background: var(--accent);
+  z-index: 200;
+  width: 0%;
+}
+
+/* === 导航 === */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 1.5rem 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.5s;
+}
+nav.scrolled {
+  padding: 0.8rem 3rem;
+  background: rgba(250, 250, 248, 0.85);
+  backdrop-filter: blur(20px);
+}
+.nav-logo {
+  font-family: var(--serif);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+}
+.nav-links { display: flex; gap: 2.5rem; }
+.nav-links a {
+  font-size: 0.75rem;
+  color: var(--text-3);
+  letter-spacing: 0.08em;
+  transition: color 0.4s;
+}
+.nav-links a:hover { color: var(--accent-deep); }
+
+/* === 英雄区 === */
+.hero {
+  min-height: 40vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 8rem 2rem 4rem;
+  position: relative;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  opacity: 0;
+  animation: circleIn 2s 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes circleIn {
+  0% { opacity: 0; transform: scale(0.5); }
+  100% { opacity: 0.25; transform: scale(1); }
+}
+.hero-tag {
+  font-family: var(--serif);
+  font-size: 0.78rem;
+  letter-spacing: 0.5em;
+  color: var(--accent);
+  font-weight: 300;
+  opacity: 0;
+  animation: fadeIn 1s 0.2s forwards;
+  margin-bottom: 3rem;
+}
+@keyframes fadeIn { to { opacity: 1; } }
+.hero-title {
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 4.5vw, 3.2rem);
+  font-weight: 300;
+  line-height: 2;
+  margin-bottom: 2rem;
+  letter-spacing: 0.1em;
+}
+.hero-title .line {
+  display: block;
+  overflow: hidden;
+}
+.hero-title .line .inner {
+  display: block;
+  transform: translateY(110%);
+  animation: lineUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.hero-title .line:nth-child(2) .inner { animation-delay: 0.2s; }
+.hero-title .line:nth-child(3) .inner { animation-delay: 0.4s; }
+.hero-title .accent { color: var(--accent-deep); font-weight: 500; }
+@keyframes lineUp { to { transform: translateY(0); } }
+.hero-sub {
+  font-size: 0.85rem;
+  color: var(--text-2);
+  letter-spacing: 0.15em;
+  font-weight: 300;
+  opacity: 0;
+  animation: fadeIn 1s 0.8s forwards;
+  line-height: 2.2;
+}
+.hero-scroll {
+  position: absolute;
+  bottom: 3rem;
+}
+.hero-scroll .line {
+  width: 1px;
+  height: 50px;
+  background: linear-gradient(to bottom, var(--accent), transparent);
+  animation: scrollPulse 2.5s ease-in-out infinite;
+}
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.2; transform: scaleY(0.4); transform-origin: top; }
+  50% { opacity: 0.8; transform: scaleY(1); }
+}
+
+/* === 分隔 === */
+.divider-quote {
+  text-align: center;
+  padding: 5rem 2rem;
+  border-top: 1px solid var(--border);
+}
+.divider-quote p {
+  font-family: var(--serif);
+  font-size: 1rem;
+  color: var(--text-3);
+  letter-spacing: 0.35em;
+  font-weight: 300;
+  line-height: 2.8;
+}
+.dot {
+  display: inline-block;
+  width: 4px; height: 4px;
+  background: var(--accent);
+  border-radius: 50%;
+  margin: 0 1.5rem;
+  vertical-align: middle;
+  opacity: 0.4;
+}
+
+/* === 个人介绍区 === */
+.about-section {
+  padding: 0;
+  max-width: 100%;
+  margin: 0 auto;
+  position: relative;
+  min-height: 0;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  border-top: 1px solid var(--border);
+}
+.about-portrait {
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 63%;
+  z-index: 1;
+}
+.about-portrait img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center bottom;
+}
+.about-content {
+  position: relative;
+  z-index: 2;
+  margin-left: auto;
+  width: 55%;
+  padding: 3rem 8rem 8rem 4rem;
+}
+.about-name {
+  font-family: var(--serif);
+  font-size: 5rem;
+  font-weight: 200;
+  letter-spacing: 0.2em;
+  margin-bottom: 0.3rem;
+  line-height: 1.2;
+  color: var(--text);
+}
+.about-name-en {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  font-weight: 300;
+  letter-spacing: 0.4em;
+  color: var(--text-3);
+  margin-bottom: 2.5rem;
+  text-transform: uppercase;
+}
+.about-desc {
+  font-size: 0.95rem;
+  line-height: 2.4;
+  color: var(--text-2);
+  font-weight: 300;
+  letter-spacing: 0.03em;
+}
+.about-line {
+  width: 40px;
+  height: 2px;
+  background: var(--pop-orange);
+  margin: 2rem 0;
+}
+
+/* === 案例区 === */
+.case-section {
+  padding: 8rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  border-top: 1px solid var(--border);
+  position: relative;
+}
+.case-section::before {
+  content: attr(data-num);
+  position: absolute;
+  top: 6rem;
+  right: 2rem;
+  font-family: var(--serif);
+  font-size: 18rem;
+  font-weight: 200;
+  color: var(--accent);
+  opacity: 0.03;
+  line-height: 1;
+  pointer-events: none;
+  z-index: 0;
+}
+.case-section > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* 杂志拼贴风：标题色块 */
+.case-title {
+  font-family: var(--serif);
+  font-size: 1.8rem;
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  text-align: center;
+  margin-bottom: 5rem;
+  line-height: 2;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+.case-title .accent {
+  color: var(--text);
+  font-weight: 500;
+  background: var(--pop-orange);
+  padding: 0.1em 0.3em;
+  transform: rotate(-1deg);
+  display: inline-block;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.05);
+}
+
+/* 画廊式大图 */
+.gallery-frame {
+  max-width: 65%;
+  margin: 0 auto 5rem;
+  position: relative;
+}
+.gallery-frame::before {
+  content: '';
+  position: absolute;
+  inset: -1.2rem;
+  border: 1px solid var(--border);
+  pointer-events: none;
+}
+/* 杂志拼贴风：胶带效果 */
+.gallery-frame::after {
+  content: '';
+  position: absolute;
+  top: -12px;
+  right: 20%;
+  width: 100px;
+  height: 30px;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.5);
+  transform: rotate(-4deg);
+  z-index: 3;
+  border-left: 1px solid rgba(0,0,0,0.08);
+  border-right: 1px solid rgba(0,0,0,0.08);
+  opacity: 0.9;
+}
+.gallery-frame img {
+  width: 100%;
+  display: block;
+  transition: transform 2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.gallery-frame:hover img {
+  transform: scale(1.015);
+}
+
+/* 双图并排 */
+.gallery-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  max-width: 90%;
+  margin: 0 auto 5rem;
+}
+.gallery-pair .frame {
+  position: relative;
+  overflow: hidden;
+}
+.gallery-pair .frame::before {
+  content: '';
+  position: absolute;
+  inset: -1rem;
+  border: 1px solid var(--border);
+  pointer-events: none;
+  z-index: 1;
+}
+/* 杂志拼贴风：胶带效果 */
+.gallery-pair .frame::after {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 15%;
+  width: 90px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.5);
+  transform: rotate(2deg);
+  z-index: 3;
+  border-left: 1px solid rgba(0,0,0,0.08);
+  border-right: 1px solid rgba(0,0,0,0.08);
+  opacity: 0.9;
+}
+.gallery-pair img {
+  width: 100%;
+  display: block;
+}
+
+/* 洞察配图（中等大小） */
+.insight-img {
+  max-width: 50%;
+  margin: 0 auto 3rem;
+  position: relative;
+}
+.insight-img::before {
+  content: '';
+  position: absolute;
+  inset: -1rem;
+  border: 1px solid var(--border);
+  pointer-events: none;
+}
+.insight-img img {
+  width: 100%;
+  display: block;
+}
+
+/* 文字区域 */
+.case-text {
+  max-width: 700px;
+  margin: 0 auto 5rem;
+  text-align: center;
+}
+.case-text h5 {
+  font-family: var(--serif);
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  color: var(--accent);
+  margin-bottom: 1.2rem;
+  font-weight: 400;
+}
+.case-text p {
+  font-size: 1rem;
+  color: var(--text-2);
+  font-weight: 300;
+  line-height: 2.2;
+  letter-spacing: 0.04em;
+}
+.case-text .quote {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--text-3);
+  font-size: 0.95rem;
+  margin-top: 1.5rem;
+  letter-spacing: 0.08em;
+}
+
+/* 左右并排文字区 */
+.case-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  max-width: 900px;
+  margin: 0 auto 5rem;
+  align-items: start;
+}
+.case-grid-item h5 {
+  font-family: var(--serif);
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  color: #fff;
+  margin-bottom: 1.2rem;
+  font-weight: 400;
+  /* 杂志拼贴风：贴纸标签 */
+  background: var(--pop-green);
+  display: inline-block;
+  padding: 0.4em 1em;
+  transform: rotate(-1.5deg);
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.08);
+}
+.case-grid-item:nth-child(2) h5 {
+  background: var(--pop-orange);
+  transform: rotate(1deg);
+}
+.case-grid-item p {
+  font-size: 0.95rem;
+  color: var(--text-2);
+  font-weight: 300;
+  line-height: 2.2;
+  letter-spacing: 0.04em;
+  text-align: left;
+}
+
+/* 装饰线条 */
+.deco-line {
+  position: absolute;
+  background: var(--accent);
+  opacity: 0.15;
+}
+.deco-line.vertical {
+  width: 1px;
+  height: 120px;
+  top: -60px;
+  left: 50%;
+}
+.deco-line.horizontal {
+  height: 1px;
+  width: 80px;
+  top: 50%;
+  right: -100px;
+}
+
+/* 数据展示：彩色大数字 */
+.results {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: flex-end;
+  margin: 5rem auto;
+  max-width: 1000px;
+  padding: 0 3rem;
+}
+.result-item {
+  text-align: center;
+  flex: 0 1 auto;
+  min-width: 200px;
+}
+.result-item:nth-child(1) .result-num { color: var(--pop-orange); }
+.result-item:nth-child(2) .result-num { color: var(--pop-green); }
+.result-item:nth-child(3) .result-num { color: #c0392b; }
+.result-num {
+  font-family: var(--serif);
+  font-size: 5rem;
+  font-weight: 200;
+  line-height: 1.2;
+  display: inline;
+}
+.result-unit {
+  font-family: var(--serif);
+  font-size: 2rem;
+  font-weight: 200;
+  display: inline;
+}
+.result-label {
+  font-size: 0.8rem;
+  color: var(--text-3);
+  margin-top: 1rem;
+  letter-spacing: 0.1em;
+  font-weight: 300;
+  display: block;
+}
+
+/* === 横向滑动卡片 === */
+.hscroll-label {
+  font-family: var(--serif);
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  color: var(--text-3);
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-weight: 300;
+}
+.hscroll-wrap {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 0 2rem 2rem;
+  margin-bottom: 5rem;
+}
+.hscroll-wrap::-webkit-scrollbar { display: none; }
+.hscroll-track {
+  display: flex;
+  gap: 1.5rem;
+  width: max-content;
+  padding: 0.5rem 0;
+}
+.hscroll-card {
+  width: 320px;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  overflow: hidden;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s;
+}
+.hscroll-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(42, 33, 24, 0.06);
+}
+.hscroll-card img {
+  width: 100%;
+  display: block;
+}
+/* 六神专用：降饱和 */
+.hscroll-card.desaturate img {
+  filter: saturate(0.7) brightness(0.97);
+}
+
+
+/* === 联系 === */
+.contact {
+  background: var(--text);
+  color: var(--bg);
+  padding: 8rem 2rem;
+  text-align: center;
+}
+.contact .label { color: var(--accent); opacity: 0.8; }
+.contact-title {
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  line-height: 2;
+  margin-bottom: 3rem;
+}
+.contact-links {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+}
+.contact-item {
+  font-size: 0.85rem;
+  color: rgba(245, 242, 236, 0.4);
+  transition: color 0.4s;
+  letter-spacing: 0.08em;
+}
+.contact-item:hover { color: var(--accent); }
+
+.footer {
+  padding: 1.5rem;
+  text-align: center;
+  font-size: 0.7rem;
+  color: var(--text-3);
+  letter-spacing: 0.08em;
+}
+
+/* === 渐入 === */
+.reveal {
+  opacity: 0;
+  transform: translateY(25px);
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 幕帘揭开 */
+.curtain {
+  position: relative;
+  overflow: hidden;
+}
+.curtain::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: var(--accent);
+  transform-origin: right;
+  transform: scaleX(1);
+  transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+  z-index: 2;
+}
+.curtain.revealed::after {
+  transform: scaleX(0);
+}
+
+/* === 响应式 === */
+@media (max-width: 768px) {
+  .comet-dot { display: none !important; }
+  body { cursor: auto; }
+  a { cursor: auto; }
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  .hero { padding: 8rem 1.5rem 6rem; }
+  .hero::before { width: 280px; height: 280px; }
+  .about-section {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    padding: 5rem 1.5rem;
+  }
+  .about-name { font-size: 2.5rem; }
+  .case-section::before { font-size: 10rem; opacity: 0.02; }
+  .case-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  .case-grid-item p { text-align: center; }
+  .gallery-frame { max-width: 90%; }
+  .gallery-pair { max-width: 90%; grid-template-columns: 1fr; }
+  .insight-img { max-width: 85%; }
+  .results { flex-direction: column; gap: 1rem; }
+  .result-card { padding: 1.5rem; }
+  .hscroll-card { width: 260px; }
+  .contact-links { flex-direction: column; gap: 1.5rem; }
+}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- 彗星尾巴 -->
+<div class="comet-dot" id="cd0"></div><div class="comet-dot" id="cd1"></div>
+<div class="comet-dot" id="cd2"></div><div class="comet-dot" id="cd3"></div>
+<div class="comet-dot" id="cd4"></div><div class="comet-dot" id="cd5"></div>
+<div class="comet-dot" id="cd6"></div><div class="comet-dot" id="cd7"></div>
+<div class="comet-dot" id="cd8"></div><div class="comet-dot" id="cd9"></div>
+<div class="comet-dot" id="cd10"></div><div class="comet-dot" id="cd11"></div>
+<div class="comet-dot" id="cd12"></div><div class="comet-dot" id="cd13"></div>
+
+<nav id="nav">
+  <a href="#" class="nav-logo">Lori.Wang</a>
+  <div class="nav-links">
+    <a href="#case-1">六神清凉节</a>
+    <a href="#case-2">IP联名增长</a>
+    <a href="#case-3">玛氏节日电商</a>
+    <a href="#contact">联系</a>
+  </div>
+</nav>
+
+<!-- ==================== 英雄区 ==================== -->
+<section class="hero">
+  <p class="hero-tag">小红书内容策略 · 创意驱动 · 活人感电商交易</p>
+  <h1 class="hero-title">
+    <span class="line"><span class="inner">曾主导六神清凉节 <span class="accent">500万预算操盘</span></span></span>
+    <span class="line"><span class="inner">擅长让商业活动长出社区的原生感</span></span>
+    <span class="line"><span class="inner">8年+ 整合营销经验，驱动品牌×电商<span class="accent">增长</span></span></span>
+  </h1>
+  <p class="hero-sub">
+    整合营销 · 小红书种草 · 电商增长<br>
+    从策略到落地的完整操盘经验
+  </p>
+  <div class="hero-scroll"><div class="line"></div></div>
+</section>
+
+<div class="divider-quote">
+  <p>洞察<span class="dot"></span>策略<span class="dot"></span>执行<span class="dot"></span>成果</p>
+</div>
+
+<!-- ==================== 个人介绍 ==================== -->
+<section class="about-section reveal">
+  <div class="about-portrait curtain">
+    <img src="assets/photo.jpg" alt="Lori.Wang">
+  </div>
+  <div class="about-content">
+    <h2 class="about-name">Lori.Wang</h2>
+    <p class="about-name-en">LORI WANG</p>
+    <div class="about-line"></div>
+    <p class="about-desc">
+      专注小红书内容策略与电商营销，擅长让商业活动长出社区的原生感。<br>
+      曾服务六神、玛氏、花西子、百雀羚等品牌，<br>
+      核心能力是内容×商品的种草-转化链路设计。
+    </p>
+  </div>
+</section>
+
+<!-- ==================== 案例1：六神清凉节 ==================== -->
+<section class="case-section" id="case-1" data-num="01">
+  <p class="label reveal">CASE STUDY</p>
+  <div class="case-num reveal">01</div>
+  <p class="case-meta reveal">六神 · 整合营销 Campaign · 2020-2025</p>
+  <h2 class="case-title reveal">
+    首创<span class="accent">联名一条街</span><br>
+    让花露水走进年轻人的夏天
+  </h2>
+
+  <!-- 主图 -->
+  <div class="gallery-frame curtain reveal">
+    <img src="assets/case1-hero.jpg" alt="六神清凉节主视觉">
+  </div>
+
+  <!-- 挑战与策略：左右并排 -->
+  <div class="case-grid reveal">
+    <div class="case-grid-item">
+      <h5>挑 战</h5>
+      <p>
+        夏季个护赛道竞争白热化，六神花露水面临"心智老化+场景局限"，如何针对Z世代进行心智突围，驱动电商与会员转化？
+      </p>
+    </div>
+    <div class="case-grid-item">
+      <h5>策 略</h5>
+      <p>
+        基于小红书「户外」「运动」话题搜索趋势，洞察"高温但还要出门"的场景需求，主导"高温出街 想凉就凉"整合营销策略。首次联名大学路打造线下公域流量池，联动明星许佳琪扩大声量，跨界美团、雪碧、青桔撬动同类用户。
+      </p>
+    </div>
+  </div>
+
+  <!-- 执行 -->
+  <div class="case-text reveal">
+    <h5>执 行</h5>
+    <p>
+      负责约500万项目预算分配（线下35%、社媒65%），搭建50+垂类KOL种草矩阵，主导小红书内容选题、脚本产出到发布后数据监控与策略优化。联动许佳琪发起「高温出街」挑战赛及天猫直播，协同多方团队完成短视频全链路产出。
+    </p>
+  </div>
+
+  <div class="results reveal">
+    <div class="result-item">
+      <span class="result-num">5</span><span class="result-unit">亿+</span>
+      <div class="result-label">累计曝光</div>
+    </div>
+    <div class="result-item">
+      <span class="result-num">241</span><span class="result-unit">%</span>
+      <div class="result-label">线上互动完成度</div>
+    </div>
+    <div class="result-item">
+      <span class="result-num">+429</span><span class="result-unit">%</span>
+      <div class="result-label">店铺访客环比增长</div>
+    </div>
+  </div>
+
+  <!-- 执行图片横向滑动 -->
+  <p class="hscroll-label reveal">滑动查看细节</p>
+  <div class="hscroll-wrap">
+    <div class="hscroll-track">
+      <div class="hscroll-card"><img src="assets/case1-detail1.jpg" alt="线下活动执行"></div>
+      <div class="hscroll-card"><img src="assets/case1-detail2.jpg" alt="KOL种草矩阵"></div>
+      <div class="hscroll-card"><img src="assets/case1-detail3.jpg" alt="明星联动"></div>
+      <div class="hscroll-card"><img src="assets/case1-detail4.jpg" alt="跨界合作"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 案例2：IP联名 ==================== -->
+<section class="case-section" id="case-2" data-num="02">
+  <p class="label reveal">CASE STUDY</p>
+  <div class="case-num reveal">02</div>
+  <p class="case-meta reveal">李大橘×大明宫 & 佳洁士×宫里的世界 · IP联名营销 · 2020-2025</p>
+  <h2 class="case-title reveal">
+    国家级IP<span class="accent">反差化联名</span><br>
+    有限预算下的年轻化突围
+  </h2>
+
+  <!-- 主图 -->
+  <div class="gallery-frame curtain reveal">
+    <img src="assets/case2-hero.jpg" alt="IP联名主视觉">
+  </div>
+
+  <!-- 挑战与策略：左右并排 -->
+  <div class="case-grid reveal">
+    <div class="case-grid-item">
+      <h5>挑 战</h5>
+      <p>
+        有限预算下，如何以国家级IP联名实现"年轻化心智×生意增长"双目标？传统文化IP如何避免说教感，真正打动年轻人？
+      </p>
+    </div>
+    <div class="case-grid-item">
+      <h5>策 略</h5>
+      <p>
+        主导IP选型与创意包装策略——"国家级IP反差化+卖点文化映射"，以创意视频领衔触达，搭建达人分层内容分发节奏（小红书、B站为主），打通站外种草到站内短链引流。
+      </p>
+    </div>
+  </div>
+
+  <!-- 执行 -->
+  <div class="case-text reveal">
+    <h5>执 行</h5>
+    <p>
+      李大橘项目：将严肃的大明宫IP与萌宠形象反差结合，创意视频+小红书KOL种草矩阵，打造"文化+可爱"的年轻化表达。佳洁士项目：联动"宫里的世界"IP，将口腔护理与宫廷文化映射，B站+小红书双平台内容分发，话题热搜引爆。
+    </p>
+  </div>
+
+  <div class="results reveal">
+    <div class="result-item">
+      <span class="result-num">+260</span><span class="result-unit">%</span>
+      <div class="result-label">李大橘阶段出货量</div>
+    </div>
+    <div class="result-item">
+      <span class="result-num">8500</span><span class="result-unit">万+</span>
+      <div class="result-label">佳洁士话题热搜阅读</div>
+    </div>
+    <div class="result-item">
+      <span class="result-num">500</span><span class="result-unit">万+</span>
+      <div class="result-label">李大橘曝光量</div>
+    </div>
+  </div>
+
+  <!-- 执行图片横向滑动 -->
+  <p class="hscroll-label reveal">滑动查看细节</p>
+  <div class="hscroll-wrap">
+    <div class="hscroll-track">
+      <div class="hscroll-card"><img src="assets/case2-detail1.jpg" alt="IP创意包装"></div>
+      <div class="hscroll-card"><img src="assets/case2-detail2.jpg" alt="内容分发策略"></div>
+      <div class="hscroll-card"><img src="assets/case2-detail3.jpg" alt="达人种草矩阵"></div>
+      <div class="hscroll-card"><img src="assets/case2-detail4.jpg" alt="话题热搜"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 案例3：玛氏节日电商 ==================== -->
+<section class="case-section" id="case-3" data-num="03">
+  <p class="label reveal">CASE STUDY</p>
+  <div class="case-num reveal">03</div>
+  <p class="case-meta reveal">玛氏箭牌 · 节日电商营销 · 2020-2025</p>
+  <h2 class="case-title reveal">
+    <span class="accent">饮食逆趋势</span>叙事<br>
+    节庆差异化定位驱动交易增长
+  </h2>
+
+  <!-- 主图 -->
+  <div class="gallery-frame curtain reveal">
+    <img src="assets/case3-hero.jpg" alt="玛氏节日电商主视觉">
+  </div>
+
+  <!-- 挑战与策略：左右并排 -->
+  <div class="case-grid reveal">
+    <div class="case-grid-item">
+      <h5>挑 战</h5>
+      <p>
+        节庆交易效率提升，突破原有用户圈层实现代际人群破圈。在健康低糖主流趋势下，如何为零食品牌找到差异化定位？
+      </p>
+    </div>
+    <div class="case-grid-item">
+      <h5>策 略</h5>
+      <p>
+        以"饮食逆趋势"叙事——当市场主推健康低糖时，反向打放纵享乐的情绪场景，进行节庆差异化定位。搭建"内容-达人-货架"策略与预算结构（约100-200万），联合头部达人公众号深度内容合作。
+      </p>
+    </div>
+  </div>
+
+  <!-- 执行 -->
+  <div class="case-text reveal">
+    <h5>执 行</h5>
+    <p>
+      细化人群货架与内容节奏，针对节庆场景设计"放纵享乐"情绪内容，联动头部达人公众号进行深度内容合作，打通站外种草到天猫旗舰店的转化链路。
+    </p>
+  </div>
+
+  <div class="results reveal">
+    <div class="result-item">
+      <span class="result-num">+48</span><span class="result-unit">%</span>
+      <div class="result-label">天猫成交额（较双十一）</div>
+    </div>
+    <div class="result-item">
+      <span class="result-num">100</span><span class="result-unit">-200万</span>
+      <div class="result-label">项目预算操盘</div>
+    </div>
+    <div class="result-item">
+      <span class="result-num">逆趋势</span>
+      <div class="result-label">差异化叙事策略</div>
+    </div>
+  </div>
+
+  <!-- 执行图片横向滑动 -->
+  <p class="hscroll-label reveal">滑动查看细节</p>
+  <div class="hscroll-wrap">
+    <div class="hscroll-track">
+      <div class="hscroll-card"><img src="assets/case3-detail1.jpg" alt="内容策略"></div>
+      <div class="hscroll-card"><img src="assets/case3-detail2.jpg" alt="达人合作"></div>
+      <div class="hscroll-card"><img src="assets/case3-detail3.jpg" alt="货架设计"></div>
+      <div class="hscroll-card"><img src="assets/case3-detail4.jpg" alt="转化链路"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 联系 ==================== -->
+<section class="contact" id="contact">
+  <p class="label reveal">GET IN TOUCH</p>
+  <h2 class="contact-title reveal">有合作想法？<br>聊聊看。</h2>
+  <div class="contact-links reveal">
+    <a class="contact-item" href="mailto:755649700@qq.com">755649700@qq.com</a>
+    <a class="contact-item" href="tel:18655657693">18655657693</a>
+    <a class="contact-item" href="#">上海 · 静安区</a>
+  </div>
+</section>
+
+<footer class="footer"><p>&copy; 2026 Lori.Wang</p></footer>
+
+<script>
+// === 彗星光标 ===
+const TRAIL_COUNT = 14;
+const dots = [];
+for (let i = 0; i < TRAIL_COUNT; i++) dots.push(document.getElementById('cd' + i));
+let trail = [], mouseX = -100, mouseY = -100, hasMoved = false;
+
+document.addEventListener('mousemove', (e) => {
+  mouseX = e.clientX; mouseY = e.clientY;
+  if (!hasMoved) {
+    hasMoved = true;
+    document.body.classList.add('mouse-active');
+    for (let i = 0; i < TRAIL_COUNT; i++) trail[i] = { x: mouseX, y: mouseY };
+  }
+});
+
+function updateTrail() {
+  if (!hasMoved) { requestAnimationFrame(updateTrail); return; }
+  trail[0] = { x: mouseX, y: mouseY };
+  for (let i = 1; i < TRAIL_COUNT; i++) {
+    if (!trail[i]) trail[i] = { x: mouseX, y: mouseY };
+    const ease = 0.4 - (i * 0.015);
+    trail[i].x += (trail[i-1].x - trail[i].x) * Math.max(ease, 0.08);
+    trail[i].y += (trail[i-1].y - trail[i].y) * Math.max(ease, 0.08);
+  }
+  dots.forEach((dot, i) => {
+    if (!trail[i]) return;
+    const progress = i / TRAIL_COUNT;
+    dot.style.left = trail[i].x + 'px';
+    dot.style.top = trail[i].y + 'px';
+    dot.style.transform = `translate(-50%, -50%) scale(${1 - progress * 0.85})`;
+    dot.style.opacity = (1 - progress) * 0.7;
+  });
+  requestAnimationFrame(updateTrail);
+}
+updateTrail();
+
+// === 导航 ===
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 80);
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  document.getElementById('scrollProgress').style.width = (scrollTop / docHeight) * 100 + '%';
+});
+
+// === 渐入 ===
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// === 幕帘 ===
+const curtainObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('revealed'); });
+}, { threshold: 0.2 });
+document.querySelectorAll('.curtain').forEach(el => curtainObs.observe(el));
+
+// === 数字跳动 ===
+function animateNum(el, target) {
+  const duration = 2000, start = performance.now();
+  function tick(now) {
+    const p = Math.min((now - start) / duration, 1);
+    const ease = p === 1 ? 1 : 1 - Math.pow(2, -10 * p);
+    el.textContent = Math.round(target * ease);
+    if (p < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+const numObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting && !e.target.dataset.done) {
+      e.target.dataset.done = '1';
+      animateNum(e.target, parseInt(e.target.dataset.target));
+    }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('[data-target]').forEach(el => numObs.observe(el));
+
+// === 横向拖拽滚动 ===
+document.querySelectorAll('.hscroll-wrap').forEach(wrap => {
+  let isDown = false, startX, scrollLeft;
+  wrap.style.cursor = 'grab';
+  wrap.addEventListener('mousedown', (e) => {
+    isDown = true; wrap.style.cursor = 'grabbing';
+    startX = e.pageX - wrap.offsetLeft; scrollLeft = wrap.scrollLeft;
+  });
+  wrap.addEventListener('mouseleave', () => { isDown = false; wrap.style.cursor = 'grab'; });
+  wrap.addEventListener('mouseup', () => { isDown = false; wrap.style.cursor = 'grab'; });
+  wrap.addEventListener('mousemove', (e) => {
+    if (!isDown) return; e.preventDefault();
+    wrap.scrollLeft = scrollLeft - (e.pageX - wrap.offsetLeft - startX) * 1.5;
+  });
+});
+
+// === 英雄区视差 ===
+window.addEventListener('scroll', () => {
+  const scrolled = window.scrollY;
+  const hero = document.querySelector('.hero');
+  if (hero && scrolled < window.innerHeight) {
+    hero.style.transform = `translateY(${scrolled * 0.12}px)`;
+    hero.style.opacity = 1 - (scrolled / window.innerHeight) * 0.4;
+  }
+});
+</script>
+</body>
+</html>
